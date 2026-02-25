@@ -142,8 +142,8 @@ score_config = {
     "SOSD_RMSE": {"weight": 0.2, "higher_is_better": False},
     "EOSD_RMSE": {"weight": 0.2, "higher_is_better": False},
     "LENGTH_RMSE": {"weight": 0.2, "higher_is_better": False},
-    # "AMPL_R2": {"weight": 0.1, "higher_is_better": True},
-    "TPROD_R2": {"weight": 0.4, "higher_is_better": True},
+    "AMPL_R2": {"weight": 0.1, "higher_is_better": True},
+    "TPROD_R2": {"weight": 0.3, "higher_is_better": True},
 }
 
 # copy to avoid chained assignment warnings
@@ -161,7 +161,7 @@ for metric, cfg in score_config.items():
         if cfg["higher_is_better"]:
             df_scores[f"{metric}_score"] = (vals - mmin) / (mmax - mmin)
         else:
-            df_scores[f"{metric}_score"] = 1 - (vals - mmin) / (60 - mmin)
+            df_scores[f"{metric}_score"] = 1 - (vals - 0) / (60 - 0)
 
 # Weighted composite
 df_scores["VPP_SCORE"] = sum(
@@ -173,3 +173,33 @@ df_scores["VPP_SCORE"] = sum(
 all_df = df_scores
 all_df.to_csv("output/ALL_VIs_SUMMARY_BY_LC_merged_with_score.csv", index=False)
 print("Wrote: output/ALL_VIs_SUMMARY_BY_LC_merged_with_score.csv")
+
+# --- NEW: PPI-only wide table (rows=Setting, cols=lc_id, values=VPP_SCORE) ---
+if "VI" not in all_df.columns:
+    raise ValueError("Column 'VI' not found in dataset (needed to filter PPI).")
+if "Setting" not in all_df.columns:
+    raise ValueError("Column 'Setting' not found in dataset (needed for rows).")
+if "lc_id" not in all_df.columns:
+    raise ValueError("Column 'lc_id' not found in dataset (needed for columns).")
+if "VPP_SCORE" not in all_df.columns:
+    raise ValueError("Column 'VPP_SCORE' not found in dataset (needed for values).")
+
+ppi_df = all_df[all_df["VI"].astype(str).str.casefold() == "ppi"].copy()
+
+if ppi_df.empty:
+    raise ValueError("No rows found for VI == 'PPI'. Check your filenames / VI inference.")
+
+# If duplicates exist for the same (Setting, lc_id), decide how to aggregate (mean here)
+ppi_pivot = ppi_df.pivot_table(
+    index="Setting",
+    columns="lc_id",
+    values="VPP_SCORE",
+    aggfunc="mean",
+)
+
+# Optional: make lc_id columns a bit nicer for CSV (string)
+ppi_pivot.columns = ppi_pivot.columns.astype(str)
+
+ppi_out = "output/PPI_scores_by_Setting_x_lc.csv"
+ppi_pivot.to_csv(ppi_out)
+print(f"Wrote: {ppi_out}")
