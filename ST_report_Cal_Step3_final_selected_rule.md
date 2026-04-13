@@ -217,6 +217,44 @@ Main interpretation:
 - the main remaining problem in `Forest` was still `EOSD`
 
 
+## TPROD comparison
+
+In addition to `SOSD` and `EOSD`, we also checked how well the final fixed-rule `ST_NBAR_PPI` product tracked `GPP` in terms of `TPROD`.
+
+Because `TPROD` is not a direct date variable, it was evaluated using correlation rather than day-based error.
+
+The comparison was carried out:
+
+- under the same final fixed-rule settings
+- using the same retained matched seasons after the `SOSD/EOSD` mismatch filter
+- by comparing `ST_NBAR_PPI TPROD` against `GPP TPROD`
+- using Pearson `R` and `R^2`
+
+The corresponding summary file is:
+
+- `output/Cal/Step3_ST_NBARPPI_VPP/Selected_ST_NBARPPI_VPP_fixed_rule_TPROD_R_summary.csv`
+
+Results:
+
+| Class | settings_id | n_obs | Pearson R | R² |
+|---|---|---:|---:|---:|
+| Cropland | `NBAR_PPI_VPP-263` | 51 | 0.476 | 0.226 |
+| Grassland | `NBAR_PPI_VPP-463` | 101 | 0.884 | 0.782 |
+| Forest | `NBAR_PPI_VPP-463` | 141 | 0.382 | 0.146 |
+| Overall | `fixed_rule` | 293 | 0.594 | 0.353 |
+
+Interpretation:
+
+- `Grassland` showed a strong `TPROD` relationship with `GPP`
+- `Cropland` showed a moderate `TPROD` relationship
+- `Forest` remained weak for `TPROD`, consistent with the more difficult seasonal behavior already seen for `EOSD`
+
+Note:
+
+- the absolute `TPROD` magnitudes of `ST_NBAR_PPI` and `GPP` are not directly comparable
+- therefore, `R` and `R^2` are more meaningful here than direct value differences
+
+
 ## Valid and ignored seasons
 
 After the mismatch filter, the final valid season counts were:
