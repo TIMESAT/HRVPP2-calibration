@@ -203,7 +203,7 @@ def main():
     p.add_argument(
         "--best_settings_csv",
         type=str,
-        default="output/Cal/Step3_ST_NBARPPI_VPP/Selected_ST_NBARPPI_VPP_SOSD_EOSD_best_settings_by_class.csv",
+        default="output/Cal/Step3_ST_NBARPPI_VPP/Selected_ST_NBARPPI_VPP_fixed_rule_summary.csv",
     )
     p.add_argument(
         "--out_plot_dir",

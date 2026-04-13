@@ -73,6 +73,10 @@ Skipped due to missing matching information:
 - `IT-Niv LC10`
 - `IT-Noe LC15`
 
+Site-LC group removed from the final fixed-rule calibration because no valid season remained after the mismatch filter:
+
+- `FR-Lus LC10`
+
 Processed site-LC counts by class:
 
 | Class | n_site_lc |
@@ -90,6 +94,31 @@ After the season-mismatch filter was applied under the final fixed rule, the num
 | Forest | 28 |
 
 This means one processed grassland site-LC group did not contribute any valid retained season under the final fixed rule.
+
+
+## Removed sites
+
+For clarity, the site-LC groups removed from the final calibration workflow are listed here explicitly.
+
+### Removed before final calibration statistics
+
+These site-LC groups were not used in the final calibration statistics for two different reasons.
+
+Reason 1: missing matching input during Step 3 processing
+
+- `FI-Sod LC8`
+- `IT-Niv LC10`
+- `IT-Noe LC15`
+
+Reason 2: processed successfully, but all seasons were rejected by the final mismatch filter
+
+- `FR-Lus LC10`
+
+Therefore, the final fixed-rule statistics were based on:
+
+- `68` processed site-LC groups
+- minus `1` site-LC group with zero valid retained season
+- equals `67` site-LC groups contributing to the final matched-season calibration
 
 
 ## Phenology extraction logic
