@@ -191,3 +191,5 @@ cython_debug/
 .cursorindexingignore
 output/*.csv
 output/*.csv
+
+.claude
